@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyBZW5NEhNp-3B6cjqId5Jrrv8jF_4HpeAY</string>
+	<key>GCM_SENDER_ID</key>
+	<string>213235388230</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.ebooksFree.RunnerTests</string>
+	<key>PROJECT_ID</key>
+	<string>ebook-e2135</string>
+	<key>STORAGE_BUCKET</key>
+	<string>ebook-e2135.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:213235388230:ios:c9c50f5efe98dcb6a2df47</string>
+</dict>
+</plist>

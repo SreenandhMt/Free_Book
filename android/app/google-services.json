@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "213235388230",
+    "project_id": "ebook-e2135",
+    "storage_bucket": "ebook-e2135.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:213235388230:android:d362905cfe78124da2df47",
+        "android_client_info": {
+          "package_name": "com.example.ebooks_free"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCERfXBav6RjUHptn1pGMCfzfi21xVn_NY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

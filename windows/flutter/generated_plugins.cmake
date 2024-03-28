@@ -4,7 +4,11 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   audio_progress_bars
+  cloud_firestore
   file_selector_windows
+  firebase_auth
+  firebase_core
+  firebase_storage
   flutter_tts
   permission_handler_windows
 )

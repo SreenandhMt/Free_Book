@@ -1,14 +1,14 @@
 import 'dart:developer';
 
 import 'package:ebooks_free/core/miniplayer_config.dart';
-import 'package:ebooks_free/feature/home/preasentation/home_page.dart';
+import 'package:ebooks_free/feature/home/presentaion/home_page.dart';
 import 'package:ebooks_free/feature/search/search_page.dart';
 import 'package:flutter/material.dart';
 import 'package:miniplayer/miniplayer.dart';
 import 'package:provider/provider.dart';
 
 import 'feature/my_pdf/my_pdf.dart';
-import 'feature/play_page/play_part.dart';
+import 'feature/play_screen/play_part.dart';
 
 ValueNotifier currentScreen = ValueNotifier(0);
 double _currentpos=0.0;

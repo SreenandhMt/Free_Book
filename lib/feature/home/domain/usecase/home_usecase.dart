@@ -7,11 +7,11 @@ abstract class HomeDataUsecase {
 }
 
 class HomeDataUsecaseImp extends HomeDataUsecase{
-  HomeDataUsecaseImp(this._homeDataRepositoryimp);
-  HomeDataRepositoryimp _homeDataRepositoryimp;
+  HomeDataUsecaseImp(this.homeDataRepositoryimp);
+  HomeDataRepositoryimp homeDataRepositoryimp;
   @override
   Future<List<MainDataEntities>> getCategoryData(String categoryName) async{
-    return await _homeDataRepositoryimp.getCategoryData(categoryName);
+    return await homeDataRepositoryimp.getCategoryData(categoryName);
   }
   
 }

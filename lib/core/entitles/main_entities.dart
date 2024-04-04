@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
 
 class MainDataEntities extends Equatable {
-  final List<int>? haveAudio;
-  final List<String>? text;
+  final List<dynamic>? haveAudio;
+  final List<dynamic>? text;
   final String? pdfUrl;
-  final List<String>? audioUrl;
-  final List<String>? partName;
+  final List<dynamic>? audioUrl;
+  final List<dynamic>? partName;
   final String? category;
   final String? bookName;
   final String? bookImageUrl;

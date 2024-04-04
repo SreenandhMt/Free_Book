@@ -53,6 +53,11 @@ dependencies:
   firebase_storage: ^11.6.11
   equatable: ^2.0.5
   get_it: ^7.6.7
+  audioplayers: ^6.0.0
+  just_audio: ^0.9.37
+  pdfx: ^2.6.0
+  internet_file: ^1.2.0
+  path_provider: ^2.1.2
 
 dev_dependencies:
   flutter_test:

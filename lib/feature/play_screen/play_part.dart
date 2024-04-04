@@ -1,154 +1,319 @@
-import 'dart:developer';
-import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 
-import '/core/miniplayer_config.dart';
-import 'play_page.dart';
+import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
+import 'package:ebooks_free/feature/play_screen/book_view.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:miniplayer/miniplayer.dart';
 import 'package:provider/provider.dart';
+import 'package:rxdart/rxdart.dart';
+
+import '/core/miniplayer_config.dart';
 
 FlutterTts tts = FlutterTts();
-  int? endpoint, startpoint, tempend, temstart;
-  ScrollController _scroll = ScrollController();
-  String? ctext;
-  bool isPlaying = true, isPause = false;
-  String runingText = text;
-  List<double> values = [];
-  int CurrentIndex = 1;
-  int point = 0;
+int? endpoint, startpoint, tempend, temstart;
+ScrollController _scroll = ScrollController();
+bool? isPlaying ;
+List<double> values = [];
+int point = 0;
+
+ValueNotifier playWidgetWidth= ValueNotifier(400);
 
 class ScreenPlayPart extends StatefulWidget {
-  const ScreenPlayPart({super.key});
+  const ScreenPlayPart({
+    super.key,
+    required this.isHaveAudio,
+  });
+  final bool isHaveAudio;
 
   @override
   State<ScreenPlayPart> createState() => _ScreenPlayPartState();
 }
 
-class _ScreenPlayPartState extends State<ScreenPlayPart> with TickerProviderStateMixin{
+class _ScreenPlayPartState extends State<ScreenPlayPart>
+    with TickerProviderStateMixin {
   late TabController _controller;
   @override
   void initState() {
-    _controller = TabController(length: 3,vsync: this);
+    if(widget.isHaveAudio)
+    {
+      _controller = TabController(length: 3, vsync: this);
+    }else{
+      _controller = TabController(length: 2, vsync: this);
+    }
+    
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Stack(
-      children: [
-        Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.bottomLeft,
-                  end: Alignment.topRight,
-                  colors: [
-                const Color.fromARGB(255, 38, 26, 59).withOpacity(0.8),
-                const Color.fromARGB(255, 27, 48, 66).withOpacity(0.8),
-              ])
-              // backgroundBlendMode: BlendMode.multiply,
-              ),
-          child: Scaffold(
-            backgroundColor: Colors.transparent,
-            body: GestureDetector(
-              onTap: () => context
-                  .read<MiniplayerProvider>()
-                  .miniPlayerController
-                  .animateToHeight(state: PanelState.MAX),
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  left: 22,
-                  right: 22,
-                ),
-                child: ListView(
-                  children: [
-                    Stack(
-                      children: [
-                        SizedBox(
-                          height: size.width * 0.1,
-                        ),
-                        Align(
-                            alignment: Alignment.topLeft,
-                            child: IconButton(
-                                onPressed: () => context
-                                    .read<MiniplayerProvider>()
-                                    .miniPlayerController
-                                    .animateToHeight(state: PanelState.MIN),
-                                icon: const Icon(
-                                    Icons.keyboard_arrow_down_rounded)))
-                      ],
+    return Consumer<MiniplayerProvider>(
+      builder: (context, state,_) {
+        if(size.width<=600)
+        {
+          return Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.bottomLeft,
+                      end: Alignment.topRight,
+                      colors: [
+                    const Color.fromARGB(255, 38, 26, 59).withOpacity(0.8),
+                    const Color.fromARGB(255, 27, 48, 66).withOpacity(0.8),
+                  ])
+                  // backgroundBlendMode: BlendMode.multiply,
+                  ),
+              child: Scaffold(
+                backgroundColor: Colors.transparent,
+                body: GestureDetector(
+                  onTap: () => context
+                      .read<MiniplayerProvider>()
+                      .miniPlayerController
+                      .animateToHeight(state: PanelState.MAX),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      left: 22,
+                      right: 22,
                     ),
-                    Column(
+                    child: ListView(
                       children: [
-                        Container(
-                          height: size.width * 1.3,
-                          width: size.width * 0.9,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              image: const DecorationImage(
-                                  image: NetworkImage(
-                                      "https://m.media-amazon.com/images/I/71eoUH2EngL._AC_UF1000,1000_QL80_.jpg"),
-                                  fit: BoxFit.fill)),
+                        Stack(
+                          children: [
+                            SizedBox(
+                              height: size.width * 0.1,
+                            ),
+                            Align(
+                                alignment: Alignment.topLeft,
+                                child: IconButton(
+                                    onPressed: () => context
+                                        .read<MiniplayerProvider>()
+                                        .miniPlayerController
+                                        .animateToHeight(state: PanelState.MIN),
+                                    icon: const Icon(
+                                        Icons.keyboard_arrow_down_rounded)))
+                          ],
                         ),
-                        SizedBox(
-                          height: size.width * 0.07,
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
                         Column(
                           children: [
-                            Text(
-                              "Tha Power Of habits",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                  fontStyle: FontStyle.values[1]),
+                            Container(
+                              height: size.width * 1.3,
+                              width: size.width * 0.9,
+                              decoration: BoxDecoration(
+                                  color: Colors.black12,
+                                  borderRadius: BorderRadius.circular(15),
+                                  image: DecorationImage(
+                                      image: NetworkImage(state.bookUrl),
+                                      fit: BoxFit.fill)),
+                            ),
+                            SizedBox(
+                              height: size.width * 0.07,
                             ),
                           ],
                         ),
-                        Icon(
-                          Icons.add_circle_outline,
-                          size: 40,
-                          color: Colors.grey[700],
-                        )
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              children: [
+                                Text(
+                                  state.bookname,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                      fontStyle: FontStyle.values[1]),
+                                ),
+                              ],
+                            ),
+                            Icon(
+                              Icons.add_circle_outline,
+                              size: 40,
+                              color: Colors.grey[700],
+                            )
+                          ],
+                        ),
+                        TabBar(
+                            onTap: (value) {
+                              setState(() {});
+                            },
+                            controller: _controller,
+                            tabs: [
+                              if (state.audioUrl != null)
+                                const Tab(
+                                  text: "Audio",
+                                ),
+                              const Tab(
+                                text: "Ai Audio",
+                              ),
+                              const Tab(
+                                text: "More",
+                              )
+                            ]),
+                        LimitedBox(
+                          maxHeight: _controller.index == 0
+                              ? size.width * 1.8
+                              : _controller.index == 1
+                                  ? (size.width * 1.8)
+                                  : (size.width * 0.8),
+                          maxWidth: size.width,
+                          child: TabBarView(
+                              physics: const NeverScrollableScrollPhysics(),
+                              controller: _controller,
+                              children: [
+                                if (state.audioUrl != null)
+                                  AudioWidgets(
+                                    audioUrl: state.audioUrl!,
+                                    text: state.text,
+                                  ),
+                                TtsAudio(text: state.text,),
+                                MoreScreens(pdfurl: state.pdfUrl,),
+                              ]),
+                        ),
                       ],
                     ),
-                     TabBar(
-                      onTap: (value) {
-                        setState(() {});
-                      },
-                          controller: _controller,
-                          tabs: const [
-                          Tab(text: "Audio",),
-                          Tab(text: "Ai Audio",),
-                          Tab(text: "More",)
-                        ]),
-                        LimitedBox(
-                               maxHeight: _controller.index==0?size.width*1.8:_controller.index==1?(size.width*1.8):(size.width*0.8),
-                               maxWidth: size.width,
-                                              child: TabBarView(
-                            physics: const NeverScrollableScrollPhysics(),
-                            controller: _controller,
-                            children: const[
-                            AudioWidgets(),
-                            TtsAudio(),
-                            MoreScreens(),
-                          ]),
-                                            ),
-                  ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ),
-      ],
+          ],
+        );
+        }else{
+          return ValueListenableBuilder(
+            valueListenable: playWidgetWidth,
+            builder: (context,value,_) {
+              return Stack(
+              children: [
+                Container(
+                  width: playWidgetWidth.value,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(9),
+                      gradient: LinearGradient(
+                          begin: Alignment.bottomLeft,
+                          end: Alignment.topRight,
+                          colors: [
+                        const Color.fromARGB(255, 38, 26, 59).withOpacity(0.8),
+                        const Color.fromARGB(255, 27, 48, 66).withOpacity(0.8),
+                      ])
+                      // backgroundBlendMode: BlendMode.multiply,
+                      ),
+                  child: Scaffold(
+                    backgroundColor: Colors.transparent,
+                    body: GestureDetector(
+                      onTap: () => context
+                          .read<MiniplayerProvider>()
+                          .miniPlayerController
+                          .animateToHeight(state: PanelState.MAX),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          left: 22,
+                          right: 22,
+                        ),
+                        child: ListView(
+                          children: [
+                            Stack(
+                              children: [
+                                SizedBox(
+                                  height: size.width * 0.1,
+                                ),
+                                Align(
+                                    alignment: Alignment.topLeft,
+                                    child: IconButton(
+                                        onPressed: () => context
+                                            .read<MiniplayerProvider>()
+                                            .clear(),
+                                        icon: const Icon(
+                                            Icons.keyboard_arrow_down_rounded)))
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                Container(
+                                  height: 350,
+                                  width: 290,
+                                  decoration: BoxDecoration(
+                                      color: Colors.black12,
+                                      borderRadius: BorderRadius.circular(15),
+                                      image: DecorationImage(
+                                          image: NetworkImage(state.bookUrl),
+                                          fit: BoxFit.fill)),
+                                ),
+                                SizedBox(
+                                  height: size.width * 0.07,
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  children: [
+                                    Text(
+                                      state.bookname,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
+                                          fontStyle: FontStyle.values[1]),
+                                    ),
+                                  ],
+                                ),
+                                Icon(
+                                  Icons.add_circle_outline,
+                                  size: 40,
+                                  color: Colors.grey[700],
+                                )
+                              ],
+                            ),
+                            TabBar(
+                                onTap: (value) {
+                                  setState(() {});
+                                },
+                                controller: _controller,
+                                tabs: [
+                                  if (state.audioUrl != null)
+                                    const Tab(
+                                      text: "Audio",
+                                    ),
+                                  const Tab(
+                                    text: "Ai Audio",
+                                  ),
+                                  const Tab(
+                                    text: "More",
+                                  )
+                                ]),
+                            LimitedBox(
+                              maxHeight: _controller.index == 0
+                                  ? size.width * 1.8
+                                  : _controller.index == 1
+                                      ? (size.width * 1.8)
+                                      : (size.width * 0.8),
+                              maxWidth: size.width,
+                              child: TabBarView(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  controller: _controller,
+                                  children: [
+                                    if (state.audioUrl != null)
+                                      AudioWidgets(
+                                        audioUrl: state.audioUrl!,
+                                        text: state.text,
+                                      ),
+                                    TtsAudio(text: state.text,),
+                                    MoreScreens(pdfurl: state.pdfUrl,),
+                                  ]),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+                      );
+            }
+          );
+        }
+      },
     );
   }
 
@@ -159,330 +324,383 @@ class _ScreenPlayPartState extends State<ScreenPlayPart> with TickerProviderStat
     endpoint = 0;
     super.dispose();
   }
-  
 }
 
+// add data
 class TtsAudio extends StatefulWidget {
-  const TtsAudio({super.key});
+  const TtsAudio({
+    super.key,
+    required this.text,
+  });
+  final String text;
 
   @override
   State<TtsAudio> createState() => _TtsAudioState();
 }
 
 class _TtsAudioState extends State<TtsAudio> {
+  late String runingText;
+  @override
+  void initState() {
+    
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Column(
       children: [
         const SizedBox(
-                      height: 20,
-                    ),
-                    Container(
-                        alignment: Alignment.topCenter,
-                        padding:
-                            const EdgeInsets.only(top: 25.0, left: 25.0, right: 25.0),
-                        child: LinearProgressIndicator(
-                          backgroundColor: Colors.grey,
-                          valueColor:
-                              const AlwaysStoppedAnimation<Color>(Colors.white),
-                          value: tempend!=null?tempend!/text.length:startpoint!=null?startpoint!/text.length:0,
-                        )),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                            onPressed: () {}, icon: const Icon(Icons.shuffle)),
-                        const Icon(
-                          Icons.skip_previous_rounded,
-                          size: 40,
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            // log("${text.length/tempend!+startpoint!} --");
-                            if (!isPlaying) {
-                              tts.stop();
-                              if (tempend != null) {
-                                tempend = endpoint! + tempend!;
-                              } else {
-                                tempend = endpoint;
-                              }
-                              runingText =
-                                  text.substring(tempend!, text.length);
-                              isPause = true;
-                              isPlaying = true;
-                            } else {
-                              play();
-                              setState(() {
-                                isPause = false;
-                              });
-                              
-                            }
-                          },
-                          icon: Icon(
-                            isPlaying ? Icons.play_arrow_rounded : Icons.pause,
-                            size: 40,
-                          ),
-                        ),
-                        const Icon(
-                          Icons.skip_next_rounded,
-                          size: 40,
-                        ),
-                        const Icon(Icons.timer_sharp)
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 27,
-                    ),
-                    Container(
-                      margin: const EdgeInsets.all(1),
-                      padding: const EdgeInsets.all(7),
-                      decoration: BoxDecoration(
-                          color: Colors.grey[400],
-                          borderRadius: BorderRadius.circular(5)),
-                      child: LimitedBox(
-                        maxHeight: size.width * 1.4,
-                        maxWidth: size.width * 1,
-                        child: ListView(
-                          shrinkWrap: true,
-                          controller: _scroll,
-                          physics: const NeverScrollableScrollPhysics(),
-                          children: [
-                            RichText(
-                                textAlign: TextAlign.start,
-                                text: TextSpan(
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.w300,
-                                        fontSize: 20,
-                                        color: Colors.black),
-                                    children: [
-                                      if (tempend != null)
-                                        TextSpan(
-                                            text: text.substring(0, tempend)),
-
-                                      // if(tempend!=null)
-                                      // TextSpan(
-                                      //   text: text.substring(tempend!,startpoint!+tempend!)
-                                      // ),
-
-                                      TextSpan(
-                                          text: runingText.substring(
-                                              0, startpoint)),
-                                      if (startpoint != null)
-                                        TextSpan(
-                                          text: runingText.substring(
-                                              startpoint!, endpoint!),
-                                          style: const TextStyle(
-                                              backgroundColor: Colors.purple,
-                                              color: Colors.white),
-                                        ),
-                                      if (endpoint != null)
-                                        TextSpan(
-                                          text: runingText.substring(endpoint!),
-                                        ),
-                                      // if(text!=ctext)
-                                      // TextSpan(
-                                      //   text: text
-                                      // ),
-                                    ])),
-                            // Text(text,style: const TextStyle(fontSize: 20,fontWeight: FontWeight.w300),)
-                          ],
-                        ),
-                      ),
-                    ),
+          height: 20,
+        ),
+        Container(
+            alignment: Alignment.topCenter,
+            padding: const EdgeInsets.only(top: 25.0, left: 25.0, right: 25.0),
+            child: LinearProgressIndicator(
+              backgroundColor: Colors.grey,
+              valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
+              value: tempend != null
+                  ? tempend! / widget.text.length
+                  : startpoint != null
+                      ? startpoint! / widget.text.length
+                      : 0,
+            )),
+        const SizedBox(
+          height: 20,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            IconButton(onPressed: () {}, icon: const Icon(Icons.shuffle)),
+            const Icon(
+              Icons.skip_previous_rounded,
+              size: 40,
+            ),
+            IconButton(
+              onPressed: () {
+                if(isPlaying==null)
+                {
+                  play();
+                  setState(() {
+                    isPlaying = true;
+                  });
+                }
+                // log("${text.length/tempend!+startpoint!} --");
+                else if (!isPlaying!) {
+                  play();
+                  setState(() {
+                    isPlaying = true;
+                  });
+                } else {
+                  tts.stop();
+                  setState(() {
+                    isPlaying = false;
+                  });
+                }
+              },
+              icon: Icon(
+                isPlaying==null||!isPlaying! ? Icons.play_arrow_rounded : Icons.pause,
+                size: 40,
+              ),
+            ),
+            const Icon(
+              Icons.skip_next_rounded,
+              size: 40,
+            ),
+            const Icon(Icons.timer_sharp)
+          ],
+        ),
+        const SizedBox(
+          height: 27,
+        ),
+        Container(
+          margin: const EdgeInsets.all(1),
+          padding: const EdgeInsets.all(7),
+          decoration: BoxDecoration(
+              color: Colors.grey[400], borderRadius: BorderRadius.circular(5)),
+          child: LimitedBox(
+            maxHeight: size.width * 1.4,
+            maxWidth: size.width * 1,
+            child: ListView(
+              shrinkWrap: true,
+              controller: _scroll,
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                Text.rich(
+                TextSpan(
+                        style: const TextStyle(
+                            fontWeight: FontWeight.w300,
+                            fontSize: 20,
+                            color: Colors.black),
+                        children: [
+                          TextSpan(text: widget.text),
+                        ])),
+                // Text(text,style: const TextStyle(fontSize: 20,fontWeight: FontWeight.w300),)
+              ],
+            ),
+          ),
+        ),
       ],
     );
   }
 
   Future<void> play() async {
     isPlaying = false;
-    int currentPoint = 0, tpoint = 0;
-    await tts.setLanguage("en-US");
+    await tts.setLanguage("en-IN");
     await tts.setPitch(5.0);
     await tts.setSpeechRate(0.67);
     await tts.setVolume(5);
-    _scroll.animateTo(1,
+    tts.speak(widget.text);
+    tts.setCompletionHandler(() {
+      isPlaying=null;
+      _scroll.animateTo(1,
         duration: const Duration(seconds: 1), curve: Curves.easeOut);
-    if (tempend != null) {
-      tts.speak(text.substring(tempend!, text.length));
-
-      tts.setProgressHandler((text, start, end, word) {
-        setState(() {
-          startpoint = start;
-          endpoint = end;
-          ctext = word;
-          tpoint = start - tpoint;
-          isPause = false;
-          log("${(tempend!+startpoint!)}");
-          log("${((tempend!+startpoint!) * text.length!)}");
-          point = ((tempend!+startpoint!) * text.length!) ~/ text.length;
-          log("${Duration(minutes: text.length)}");
-          log("${text.length}");
-          log(point.toString());
-          if(startpoint! >=text.length)
-          {
-            startpoint=null;
-          tempend=null;
-          isPause=true;
-          isPlaying=true;
-          
-          }
-        });
-        if (tpoint > 20) {
-          if (tpoint <= _scroll.position.maxScrollExtent) {
-            tpoint = 0;
-            currentPoint = currentPoint + 3;
-            _scroll.animateTo((currentPoint).toDouble(),
-                duration: const Duration(seconds: 6), curve: Curves.easeOut);
-            setState(() {});
-          } else {
-            _scroll.animateTo(_scroll.position.maxScrollExtent,
-                duration: const Duration(seconds: 6), curve: Curves.easeOut);
-            tpoint = 50;
-          }
-        }
-      });
-
-      return;
-    }
-    
-    final d = tts.speak(text);
-    tts.setProgressHandler((text, start, end, word) {
-      setState(() {
-        startpoint = start;
-        endpoint = end;
-
-        ctext = word;
-        tpoint = start - tpoint;
-        point = (startpoint!*text.length) ~/ text.length ;
-        if(startpoint! >=text.length)
-          {
-            startpoint=null;
-          tempend=null;
-          isPause=true;
-          isPlaying=true;
-          
-          }
-      });
-
-
-      if (tpoint > 20) {
-        if (tpoint <= _scroll.position.maxScrollExtent) {
-          tpoint = 0;
-          currentPoint = currentPoint + 3;
-          _scroll.animateTo((currentPoint).toDouble(),
-              duration: const Duration(seconds: 6), curve: Curves.easeOut);
-          setState(() {});
-        } else {
-          _scroll.animateTo(_scroll.position.maxScrollExtent,
-              duration: const Duration(seconds: 6), curve: Curves.easeOut);
-          tpoint = 50;
-        }
-      }
     });
-    // log(d.toString());
-    return;
   }
 }
+// if (tempend != null) {
+//       await tts.speak(widget.text.substring(tempend!, widget.text.length));
+//       log("mmm oumbi");
+//       tts.setProgressHandler((text, start, end, word) {
+//         log("dddd");
+//           startpoint = start;
+//           endpoint = end;
+//           tpoint = start - tpoint;
+//           isPause = false;
+//           point = ((tempend! + startpoint!) * widget.text.length) ~/ widget.text.length;
 
-class AudioWidgets extends StatelessWidget {
-  const AudioWidgets({super.key});
+//           if (end >= widget.text.length) {
+//             startpoint = null;
+//             tempend = null;
+//             isPause = true;
+//             isPlaying = true;
+//           }
+//         log("sss -1");
+//         setState(() {
+          
+//         });
+//         if (tpoint > 20) {
+//           if (tpoint <= _scroll.position.maxScrollExtent) {
+//             tpoint = 0;
+//             currentPoint = currentPoint + 3;
+//             _scroll.animateTo((currentPoint).toDouble(),
+//                 duration: const Duration(seconds: 6), curve: Curves.easeOut);
+//             setState(() {});
+//           } else {
+//             _scroll.animateTo(_scroll.position.maxScrollExtent,
+//                 duration: const Duration(seconds: 6), curve: Curves.easeOut);
+//             setState(() {});
+//             tpoint = 50;
+//           }
+//         }
+//       });
+
+//       return;
+//     }
+
+//     await tts.speak(widget.text);
+//     log("mm -1");
+//     tts.setProgressHandler((text, start, end, word) {
+//         startpoint = start;
+//         endpoint = end;
+//         log("dddd -1");
+//         tpoint = start - tpoint;
+//         point = (startpoint! * widget.text.length) ~/ widget.text.length;
+//         if (startpoint! >= widget.text.length) {
+//           startpoint = null;
+//           tempend = null;
+//           isPause = true;
+//           isPlaying = true;
+//         }
+//     setState(() {});
+//     log("sss -1");
+//       if (tpoint > 20) {
+//         if (tpoint <= _scroll.position.maxScrollExtent) {
+//           tpoint = 0;
+//           currentPoint = currentPoint + 3;
+//           _scroll.animateTo((currentPoint).toDouble(),
+//               duration: const Duration(seconds: 6), curve: Curves.easeOut);
+//           setState(() {});
+//         } else {
+//           _scroll.animateTo(_scroll.position.maxScrollExtent,
+//               duration: const Duration(seconds: 6), curve: Curves.easeOut);
+//           tpoint = 50;
+//         }
+//       }
+//     });
+//     log("ggg -1");
+//     // log(d.toString());
+//     return;
+bool audioPlay=false;
+
+class AudioWidgets extends StatefulWidget {
+  const AudioWidgets({
+    super.key,
+    required this.audioUrl,
+    required this.text,
+  });
+  final String audioUrl;
+  final String text;
 
   @override
+  State<AudioWidgets> createState() => _AudioWidgetsState();
+}
+
+class _AudioWidgetsState extends State<AudioWidgets> {
+  AudioPlayer audioPlayer =AudioPlayer();
+  Duration position=Duration.zero;
+
+  Stream<PositionData> get _position => Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(audioPlayer.positionStream,audioPlayer.bufferedPositionStream,audioPlayer.durationStream,(position,bufferedPosition,duration)=>PositionData(position, bufferedPosition, duration??Duration.zero));
+
+  @override
+  void initState() {
+    audioPlayer.setUrl(widget.audioUrl);
+    audioPlayer.pause();
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
+    
+    
     final size = MediaQuery.of(context).size;
     return Column(
       children: [
         const SizedBox(
-                      height: 20,
-                    ),
-                    const ProgressBar(progress: Duration(seconds: 1), total: Duration(seconds: 2)),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                            onPressed: () {}, icon: const Icon(Icons.shuffle)),
-                        const Icon(
-                          Icons.skip_previous_rounded,
-                          size: 40,
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            
-                          },
-                          icon: Icon(
-                            isPlaying ? Icons.play_arrow_rounded : Icons.pause,
-                            size: 40,
-                          ),
-                        ),
-                        const Icon(
-                          Icons.skip_next_rounded,
-                          size: 40,
-                        ),
-                        const Icon(Icons.timer_sharp)
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 14,
-                    ),
-                    Container(
-                      margin: const EdgeInsets.all(1),
-                      padding: const EdgeInsets.all(7),
-                      decoration: BoxDecoration(
-                          color: Colors.grey[400],
-                          borderRadius: BorderRadius.circular(5)),
-                      child: LimitedBox(
-                        maxHeight: size.width * 1.4,
-                        maxWidth: size.width * 1,
-                        child: ListView(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          children: [
-                            Text(text,style: const TextStyle(fontSize: 20,fontWeight: FontWeight.w300),)
-                          ],
-                        ),
-                      ),
-                    ),
+          height: 20,
+        ),
+        StreamBuilder(
+          stream: _position,
+          builder: (context, snapshot){
+            final position = snapshot.data;
+            if(position!=null)
+            {
+              return ProgressBar(
+              
+              onSeek: (value) => audioPlayer.seek(value),
+                progress:position.position,buffered: position.bufferedPosition, total: position.duration);
+            }else{
+              return const ProgressBar(progress: Duration.zero, total: Duration.zero);
+            }
+          }
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            IconButton(onPressed: () {}, icon: const Icon(Icons.shuffle)),
+            const Icon(
+              Icons.skip_previous_rounded,
+              size: 40,
+            ),
+            IconButton(
+              onPressed: () {
+                if(!audioPlay)
+                {
+                 audioPlayer.play(); 
+                 audioPlay=true;
+                 setState((){});
+                }else{
+                  audioPlay=false;
+                  audioPlayer.pause();
+                  setState((){});
+                }
+                
+              },
+              icon: Icon(
+                !audioPlay ? Icons.play_arrow_rounded : Icons.pause,
+                size: 40,
+              ),
+            ),
+            const Icon(
+              Icons.skip_next_rounded,
+              size: 40,
+            ),
+            const Icon(Icons.timer_sharp)
+          ],
+        ),
+        const SizedBox(
+          height: 14,
+        ),
+        Container(
+          margin: const EdgeInsets.all(1),
+          padding: const EdgeInsets.all(7),
+          decoration: BoxDecoration(
+              color: Colors.grey[400], borderRadius: BorderRadius.circular(5)),
+          child: LimitedBox(
+            maxHeight: size.width * 1.4,
+            maxWidth: size.width * 1,
+            child: ListView(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                Text(
+                  widget.text,
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.w300),
+                )
+              ],
+            ),
+          ),
+        ),
       ],
     );
   }
 }
 
+
+
+class PositionData {
+  final Duration position;
+  final Duration bufferedPosition;
+  final Duration duration;
+
+  PositionData(this.position, this.bufferedPosition, this.duration);
+}
+
 class MoreScreens extends StatelessWidget {
-  const MoreScreens({super.key});
+  const MoreScreens({super.key,required this.pdfurl});
+  final String pdfurl;
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Wrap(
       children: [
-        MoreWidgets(size,"Book View",Icons.menu_book_rounded),
-        MoreWidgets(size,"Pdf View",Icons.picture_as_pdf_rounded),
-        MoreWidgets(size,"Add Favarate",Icons.favorite_border_sharp),
-        MoreWidgets(size,"More",Icons.read_more_rounded)
+        GestureDetector(
+          onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => BookView(url: pdfurl,),)),
+          child: moreWidgets(size, "Book View", Icons.menu_book_rounded)),
+        moreWidgets(size, "Pdf View", Icons.picture_as_pdf_rounded),
+        moreWidgets(size, "Add Favarate", Icons.favorite_border_sharp),
+        moreWidgets(size, "More", Icons.read_more_rounded)
       ],
     );
   }
-  Widget MoreWidgets(Size size,String text,IconData icon)
-  {
+
+  Widget moreWidgets(Size size, String text, IconData icon) {
     return Container(
-        margin: EdgeInsets.all(10),
-          height: size.width*0.2,
-          width: size.width*0.26,
-          decoration: BoxDecoration(color: Colors.black26,borderRadius: BorderRadius.circular(10)),
-          child: Center(child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(icon,color: Colors.grey,size: 30,),
-              Text(text,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 10),),
-            ],
-          ),),
-        );
+      margin: const EdgeInsets.all(10),
+      height: size.width * 0.2,
+      width: size.width * 0.26,
+      decoration: BoxDecoration(
+          color: Colors.black26, borderRadius: BorderRadius.circular(10)),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
+              color: Colors.grey,
+              size: 30,
+            ),
+            Text(
+              text,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 10),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

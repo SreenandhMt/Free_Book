@@ -1,10 +1,8 @@
 import 'package:ebooks_free/feature/my_pdf/presentaion/page/account_page/desktop/account_desktop_view.dart';
 import 'package:ebooks_free/feature/my_pdf/presentaion/page/account_page/mobile/account_mobile_view.dart';
 import 'package:ebooks_free/feature/my_pdf/presentaion/page/account_page/tablet/account_tablet_view.dart';
-import 'package:ebooks_free/feature/play_screen/play_page.dart';
+import 'package:ebooks_free/feature/play_screen/presentation/page/play_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tts/flutter_tts.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
 import 'package:ebooks_free/core/entitles/main_entities.dart';
@@ -19,41 +17,33 @@ class MyPdfToAudioPage extends StatefulWidget {
 }
 
 class _MyPdfToAudioPageState extends State<MyPdfToAudioPage> {
-  final HiveInterface hive = Hive;
-  FlutterTts tts = FlutterTts();
-  List<String> text = ["emty", "Ss"];
-  int? startpoint, endpoint;
-  String ctext = "";
+  
+  
 
   @override
   void initState() {
-    
-      context.read<AccountProvider>().getAllData();
-    
+    context.read<AccountProvider>().getAllData();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    if(size.width<=600)
-    {
-      return const AccountMobileView();
-    }
-    else if(size.width<=1200)
-    {
-      return const AccountTabletView();
-    }else{
-      return const AccountDesktopView();
-    }
+    return Consumer<AccountProvider>(
+      builder: (context, value, child) {
+        if (size.width <= 600) {
+          return const AccountMobileView();
+        } else if (size.width <= 1200) {
+          return const AccountTabletView();
+        } else {
+          return const AccountDesktopView();
+        }
+      },
+    );
+    
     
   }
 
-  @override
-  void dispose() {
-    tts.stop();
-    super.dispose();
-  }
 }
 
 class ProfilePageCart extends StatelessWidget {

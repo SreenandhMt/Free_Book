@@ -1,13 +1,12 @@
-// ignore_for_file: non_constant_identifier_names
 
 import 'dart:developer';
 
+import 'package:ebooks_free/core/theme.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tts/flutter_tts.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 
@@ -19,107 +18,10 @@ int pages = 1;
 bool isLoding = false;
 TextEditingController _aboutController = TextEditingController();
 TextEditingController _bookNameController = TextEditingController();
-TextEditingController _Part2controller = TextEditingController();
-TextEditingController _Part3controller = TextEditingController();
-List<String> ListText = [
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-];
+List<String> listText = [""];
 
-List<String> partName = [
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-  "",
-];
+List<String> partName = [];
 
-FlutterTts tts = FlutterTts();
 
 class ScreenCreatebooks extends StatefulWidget {
   const ScreenCreatebooks({super.key});
@@ -141,13 +43,7 @@ class _ScreenCreatebooksState extends State<ScreenCreatebooks> {
         children: [
           Container(
             decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.bottomLeft,
-                    end: Alignment.topRight,
-                    colors: [
-                  const Color.fromARGB(255, 38, 26, 59).withOpacity(0.8),
-                  const Color.fromARGB(255, 27, 48, 66).withOpacity(0.8),
-                ])
+                gradient: theme
                 // backgroundBlendMode: BlendMode.multiply,
                 ),
             child: Scaffold(
@@ -157,7 +53,6 @@ class _ScreenCreatebooksState extends State<ScreenCreatebooks> {
                   color: Colors.black,
                 ),
               ),
-              backgroundColor: Colors.transparent,
               body: Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: ListView(
@@ -187,24 +82,6 @@ class _ScreenCreatebooksState extends State<ScreenCreatebooks> {
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10)),
                             hintText: "About",
-                          ),
-                          maxLines: 10,
-                        ),
-                        TextFormField(
-                          controller: _Part2controller,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            hintText: "imsge url",
-                          ),
-                          maxLines: 10,
-                        ),
-                        TextFormField(
-                          controller: _Part3controller,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            hintText: "pdf url",
                           ),
                           maxLines: 10,
                         ),
@@ -283,7 +160,6 @@ class _ScreenCreatebooksState extends State<ScreenCreatebooks> {
     log(text);
     setState(() {
       pages = 0;
-      _Part2controller.text = text;
     });
     return text;
   }
@@ -311,17 +187,10 @@ class _TextEditerState extends State<TextEditer> {
       children: [
         Container(
           decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.bottomLeft,
-                    end: Alignment.topRight,
-                    colors: [
-                  const Color.fromARGB(255, 38, 26, 59).withOpacity(0.8),
-                  const Color.fromARGB(255, 27, 48, 66).withOpacity(0.8),
-                ])
+                gradient: theme
                 // backgroundBlendMode: BlendMode.multiply,
                 ),
           child: Scaffold(
-            backgroundColor: Colors.transparent,
             appBar: AppBar(),
             body: ListView(
               children: [
@@ -329,9 +198,8 @@ class _TextEditerState extends State<TextEditer> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                     onChanged: (value) {
-                      ListText[0] = value;
+                        listText[0] = value;
                     },
-                    controller: _Part2controller,
                     decoration: InputDecoration(
                       border:
                           OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
@@ -348,7 +216,7 @@ class _TextEditerState extends State<TextEditer> {
                         padding: const EdgeInsets.all(8.0),
                         child: TextFormField(
                           onChanged: (value) {
-                            ListText[index + 1] = value;
+                            listText[index + 1] = value;
                           },
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
@@ -364,6 +232,7 @@ class _TextEditerState extends State<TextEditer> {
                   onTap: () async {
                     if (pages < 40) {
                       pages = pages + 1;
+                      listText.add("");
                       setState(() {});
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -395,7 +264,7 @@ class _TextEditerState extends State<TextEditer> {
                         builder: (context) => const ScreenCreatebooks()));
                   } else {
                     List<String> localListText = [];
-                    for (var text in ListText) {
+                    for (var text in listText) {
                       if (text.isNotEmpty) {
                         localListText.add(text);
                       }
@@ -422,8 +291,8 @@ class _TextEditerState extends State<TextEditer> {
 }
 
 
-List<String> Urls = [];
-bool Loding=false;
+List<String> urls = [];
+bool loding=false;
 
 class AudioDocument extends StatefulWidget {
   const AudioDocument({
@@ -448,38 +317,31 @@ class _AudioDocumentState extends State<AudioDocument> {
   Widget build(BuildContext context) {
     
     List<String> localListText = [];
-    for (var text in ListText) {
+    for (var text in listText) {
       if (text.isNotEmpty) {
         localListText.add(text);
       }
     }
     return Container(
       decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.bottomLeft,
-                    end: Alignment.topRight,
-                    colors: [
-                  const Color.fromARGB(255, 38, 26, 59).withOpacity(0.8),
-                  const Color.fromARGB(255, 27, 48, 66).withOpacity(0.8),
-                ])
+                gradient: theme
                 // backgroundBlendMode: BlendMode.multiply,
                 ),
       child: Scaffold(
-        backgroundColor: Colors.transparent,
         appBar: AppBar(title: const Text("you can skip this"),),
-        body: !Loding? Column(
+        body: !loding? Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: List.generate(indexs, (index) => Padding(
             padding: const EdgeInsets.all(17),
             child: GestureDetector(
               onTap: () async{
-                Loding=true;
+                loding=true;
                 setState(() {});
                 final data = (await FilePicker.platform.pickFiles(type: FileType.audio))!;
                 await FirebaseStorage.instance.ref().child("s/${data.xFiles.first.name}").putData(await data.xFiles.first.readAsBytes());
                 final localurl = await FirebaseStorage.instance.ref().child("s/${data.xFiles.first.name}").getDownloadURL();
-                Urls.add(localurl);
-                Loding=false;
+                urls.add(localurl);
+                loding=false;
                 if(indexs<=localListText.length)
                 {
                   indexs=indexs+1;
@@ -509,14 +371,18 @@ class _AudioDocumentState extends State<AudioDocument> {
                     MaterialPageRoute(builder: (context) =>  TextEditer(bookAbout: widget.bookAbout,bookName: widget.bookName,pdf: widget.pdf,)));
               } else if (value == 1) {
                 List<String> localListText = [];
-                for (var text in ListText) {
+                for (var text in listText) {
                   if (text.isNotEmpty) {
                     localListText.add(text);
                   }
                 }
+              for (var i=0;i<=localListText.length;i++) {
+                partName.add("");
+                
+              }
               Navigator.of(context).pop();
               Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => PartName(text: localListText,bookAbout: widget.bookAbout,bookName: widget.bookName,pdf: widget.pdf,url: Urls,)));
+                    MaterialPageRoute(builder: (context) => PartName(text: localListText,bookAbout: widget.bookAbout,bookName: widget.bookName,pdf: widget.pdf,url: urls,)));
               }
             },
             currentIndex: 1,
@@ -553,9 +419,17 @@ class PartName extends StatefulWidget {
 class _PartNameState extends State<PartName> {
   String _selectedLocation="general";
   List<String> locations =["classics","motivational","comady","story","horror","general","history"];
+  String initValue = "public";
+  List<String> pos = ["public","private"];
   int part=1;
   @override
   Widget build(BuildContext context) {
+    if (isLoding) {
+      return const Center(
+          child: CupertinoActivityIndicator(
+        radius: 15,
+      ));
+    }
     return Scaffold(
       appBar: AppBar(),
       body: ListView(
@@ -580,6 +454,21 @@ class _PartNameState extends State<PartName> {
                 child: Text(location),
               );
             }).toList(),
+          ),
+          const SizedBox(height: 20,),
+          DropdownButton(
+            value: initValue,
+            onChanged: (newValue) {
+              setState(() {
+                initValue = newValue!;
+              });
+            },
+            items: pos.map((String location) {
+              return DropdownMenuItem<String>(
+                value: location  ,
+                child: Text(location),
+              );
+            }).toList(),
           )
           // IconButton(onPressed: (){if(widget.text.length<=part){setState((){part=part+1;});}log(partName.toString());}, icon: const Icon(Icons.add))
         ],
@@ -595,6 +484,8 @@ class _PartNameState extends State<PartName> {
                 
                 if(_pdfFile!=null)
                 {
+                  loding=true;
+                  setState(() {});
                   final data = await _pdfFile!.xFiles.first.readAsBytes();
                   await FirebaseStorage.instance.ref().child("s/${_pdfFile!.xFiles.first.name}").putData(data);
                   final url = await FirebaseStorage.instance.ref().child("s/${_pdfFile!.xFiles.first.name}").getDownloadURL();
@@ -608,7 +499,17 @@ class _PartNameState extends State<PartName> {
                       localPartName.add(row);
                     }
                   }
-                  context.read<AccountProvider>().createBook(MainDataModule(audioUrl: widget.url,bookAbout: widget.bookAbout,bookImageUrl: imageurl,bookName: widget.bookName,category: _selectedLocation,haveAudio: const[1,0],partName: localPartName,pdfUrl: url,text: widget.text,), await _pdfFile!.xFiles.first.readAsBytes());
+                  loding=false;
+                  setState(() {});
+                  if(initValue=="pubilc")
+                  {
+                    context.read<AccountProvider>().createBook(MainDataModule(audioUrl: widget.url,bookAbout: widget.bookAbout,bookImageUrl: imageurl,bookName: widget.bookName,category: _selectedLocation,haveAudio: const[1,0],partName: localPartName,pdfUrl: url,text: widget.text,), await _pdfFile!.xFiles.first.readAsBytes());
+                  }
+                  else{
+                    context.read<AccountProvider>().createPrivateBook(MainDataModule(audioUrl: widget.url,bookAbout: widget.bookAbout,bookImageUrl: imageurl,bookName: widget.bookName,category: _selectedLocation,haveAudio: const[1,0],partName: localPartName,pdfUrl: url,text: widget.text,), await _pdfFile!.xFiles.first.readAsBytes());
+
+                  }
+                  
                   Navigator.of(context).pop();
                 }
                 

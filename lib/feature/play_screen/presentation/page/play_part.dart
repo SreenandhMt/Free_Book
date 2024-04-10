@@ -1,7 +1,7 @@
 
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
-import 'package:ebooks_free/feature/play_screen/book_view.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:ebooks_free/core/theme.dart';
+import 'package:ebooks_free/feature/play_screen/presentation/page/book_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:just_audio/just_audio.dart';
@@ -57,13 +57,7 @@ class _ScreenPlayPartState extends State<ScreenPlayPart>
           children: [
             Container(
               decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.bottomLeft,
-                      end: Alignment.topRight,
-                      colors: [
-                    const Color.fromARGB(255, 38, 26, 59).withOpacity(0.8),
-                    const Color.fromARGB(255, 27, 48, 66).withOpacity(0.8),
-                  ])
+                  gradient: theme
                   // backgroundBlendMode: BlendMode.multiply,
                   ),
               child: Scaffold(
@@ -200,111 +194,115 @@ class _ScreenPlayPartState extends State<ScreenPlayPart>
                       ),
                   child: Scaffold(
                     backgroundColor: Colors.transparent,
-                    body: GestureDetector(
-                      onTap: () => context
-                          .read<MiniplayerProvider>()
-                          .miniPlayerController
-                          .animateToHeight(state: PanelState.MAX),
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          left: 22,
-                          right: 22,
-                        ),
-                        child: ListView(
-                          children: [
-                            Stack(
-                              children: [
-                                SizedBox(
-                                  height: size.width * 0.1,
-                                ),
-                                Align(
-                                    alignment: Alignment.topLeft,
-                                    child: IconButton(
-                                        onPressed: () => context
-                                            .read<MiniplayerProvider>()
-                                            .clear(),
-                                        icon: const Icon(
-                                            Icons.keyboard_arrow_down_rounded)))
-                              ],
+                    body: ListView(
+                      children: [
+                        GestureDetector(
+                          onTap: () => context
+                              .read<MiniplayerProvider>()
+                              .miniPlayerController
+                              .animateToHeight(state: PanelState.MAX),
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              left: 22,
+                              right: 22,
                             ),
-                            Column(
+                            child: Column(
                               children: [
-                                Container(
-                                  height: 350,
-                                  width: 290,
-                                  decoration: BoxDecoration(
-                                      color: Colors.black12,
-                                      borderRadius: BorderRadius.circular(15),
-                                      image: DecorationImage(
-                                          image: NetworkImage(state.bookUrl),
-                                          fit: BoxFit.fill)),
+                                Stack(
+                                  children: [
+                                    SizedBox(
+                                      height: size.width * 0.1,
+                                    ),
+                                    Align(
+                                        alignment: Alignment.topLeft,
+                                        child: IconButton(
+                                            onPressed: () => context
+                                                .read<MiniplayerProvider>()
+                                                .clear(),
+                                            icon: const Icon(
+                                                Icons.keyboard_arrow_down_rounded)))
+                                  ],
                                 ),
-                                SizedBox(
-                                  height: size.width * 0.07,
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
                                 Column(
                                   children: [
-                                    Text(
-                                      state.bookname,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18,
-                                          fontStyle: FontStyle.values[1]),
+                                    Container(
+                                      height: 350,
+                                      width: 290,
+                                      decoration: BoxDecoration(
+                                          color: Colors.black12,
+                                          borderRadius: BorderRadius.circular(15),
+                                          image: DecorationImage(
+                                              image: NetworkImage(state.bookUrl),
+                                              fit: BoxFit.fill)),
+                                    ),
+                                    SizedBox(
+                                      height: size.width * 0.07,
                                     ),
                                   ],
                                 ),
-                                Icon(
-                                  Icons.add_circle_outline,
-                                  size: 40,
-                                  color: Colors.grey[700],
-                                )
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      children: [
+                                        Text(
+                                          state.bookname,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18,
+                                              fontStyle: FontStyle.values[1]),
+                                        ),
+                                      ],
+                                    ),
+                                    Icon(
+                                      Icons.add_circle_outline,
+                                      size: 40,
+                                      color: Colors.grey[700],
+                                    )
+                                  ],
+                                ),
+                                TabBar(
+                                    onTap: (value) {
+                                      setState(() {});
+                                    },
+                                    controller: _controller,
+                                    tabs: [
+                                      if (state.audioUrl != null)
+                                        const Tab(
+                                          text: "Audio",
+                                        ),
+                                      const Tab(
+                                        text: "Ai Audio",
+                                      ),
+                                      const Tab(
+                                        text: "More",
+                                      )
+                                    ]),
+                                LimitedBox(
+                                  maxHeight: _controller.index == 0
+                                      ? size.width * 1.6
+                                      : _controller.index == 1
+                                          ? (size.width * 1.6)
+                                          : (size.width * 0.1),
+                                  maxWidth: size.width,
+                                  child: TabBarView(
+                                      physics: const NeverScrollableScrollPhysics(),
+                                      controller: _controller,
+                                      children: [
+                                        if (state.audioUrl != null)
+                                          AudioWidgets(
+                                            audioUrl: state.audioUrl!,
+                                            text: state.text,
+                                          ),
+                                        TtsAudio(text: state.text,),
+                                        MoreScreens(pdfurl: state.pdfUrl,),
+                                      ]),
+                                ),
                               ],
                             ),
-                            TabBar(
-                                onTap: (value) {
-                                  setState(() {});
-                                },
-                                controller: _controller,
-                                tabs: [
-                                  if (state.audioUrl != null)
-                                    const Tab(
-                                      text: "Audio",
-                                    ),
-                                  const Tab(
-                                    text: "Ai Audio",
-                                  ),
-                                  const Tab(
-                                    text: "More",
-                                  )
-                                ]),
-                            LimitedBox(
-                              maxHeight: _controller.index == 0
-                                  ? size.width * 1.8
-                                  : _controller.index == 1
-                                      ? (size.width * 1.8)
-                                      : (size.width * 0.8),
-                              maxWidth: size.width,
-                              child: TabBarView(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  controller: _controller,
-                                  children: [
-                                    if (state.audioUrl != null)
-                                      AudioWidgets(
-                                        audioUrl: state.audioUrl!,
-                                        text: state.text,
-                                      ),
-                                    TtsAudio(text: state.text,),
-                                    MoreScreens(pdfurl: state.pdfUrl,),
-                                  ]),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                   ),
                 ),

@@ -6,7 +6,7 @@ class HomeDataProvider extends ChangeNotifier{
   HomeDataProvider(this.dataUsecaseImp);
   HomeDataUsecaseImp dataUsecaseImp;
 
-  bool isLoding=false;
+  bool isLoding=true;
 
   List<MainDataEntities>? classics,motivational,comady,general,top10,story,horror,history;
   
@@ -40,7 +40,6 @@ class HomeDataProvider extends ChangeNotifier{
     motivational!.shuffle();
     comady!.shuffle();
     general!.shuffle();
-    // top10 = await _dataUsecaseImp.getCategoryData("top10");
     notifyListeners();
     return;
   }

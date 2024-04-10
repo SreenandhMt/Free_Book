@@ -13,9 +13,22 @@ class AccountProvider extends ChangeNotifier{
 
   AccountProvider(this.accountUcecase);
   AccountUcecaseImp accountUcecase;
+
+  bool isLoding =false;
   
   Future<void> createBook(MainDataModule mainDataModule,Uint8List uint8list)async{
     await accountUcecase.createBook(mainDataModule);
+  }
+  Future<void> createPrivateBook(MainDataModule mainDataModule,Uint8List uint8list)async{
+    await accountUcecase.createPrivateBooks(FirebaseAuth.instance.currentUser!.uid,mainDataModule);
+  }
+
+  Future<void> init()async{
+    isLoding=true;
+    notifyListeners();
+    await getAllData();
+    isLoding=false;
+    notifyListeners();
   }
 
   Future<void>getAllData()async{
@@ -23,6 +36,10 @@ class AccountProvider extends ChangeNotifier{
     publicBooks = await accountUcecase.myPublicBooks(uid);
     favoriteBooks = await accountUcecase.getFavoritebook(uid);
     privateBooks = await accountUcecase.getPrivateBooks(uid);
+    if(privateBooks!=null&&privateBooks!.isEmpty)
+    {
+      privateBooks=null;
+    }
     notifyListeners();
     
     return;

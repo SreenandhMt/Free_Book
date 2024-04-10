@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/entitles/main_entities.dart';
-import '../../../play_screen/play_page.dart';
+import '../../../play_screen/presentation/page/play_page.dart';
 
 class BookCart extends StatelessWidget {
   const BookCart({
@@ -15,9 +15,9 @@ class BookCart extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     if(size.width<=600)
     {
-      return Column(
-      children: [
-        GestureDetector(
+      return MouseRegion(
+        cursor: MaterialStateMouseCursor.clickable,
+        child: GestureDetector(
           onTap: () => Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => ScreenPlay(eBook: book,))),
           child: Container(
@@ -32,12 +32,11 @@ class BookCart extends StatelessWidget {
                     ),
           ),
         ),
-      ],
-    );
+      );
     }else{
-      return Column(
-      children: [
-        GestureDetector(
+      return MouseRegion(
+        cursor: MaterialStateMouseCursor.clickable,
+        child: GestureDetector(
           onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => ScreenPlay(eBook: book,))),
           child: Container(
             width: 200,
@@ -51,8 +50,40 @@ class BookCart extends StatelessWidget {
                     ),
           ),
         ),
-      ],
-    );
+      );
+    }
+  }
+}
+
+class BookCartForLoading extends StatelessWidget {
+  const BookCartForLoading({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    if(size.width<=600)
+    {
+      return Container(
+        width: size.width * 0.31,
+        height: size.width * 0.43,
+        decoration: BoxDecoration(
+          color: Colors.black26,
+            borderRadius: BorderRadius.circular(5),
+            
+                ),
+      );
+    }else{
+      return Container(
+        width: 200,
+        height: 290,
+        decoration: BoxDecoration(
+          color: Colors.black26,
+            borderRadius: BorderRadius.circular(5),
+            
+                ),
+      );
     }
   }
 }

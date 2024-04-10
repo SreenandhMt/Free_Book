@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (context) => MiniplayerProvider(),),ChangeNotifierProvider<HomeDataProvider>(create: (context) => sl(),),ChangeNotifierProvider<AccountProvider>(create: (context) => sl(),),ChangeNotifierProvider<SearchProvider>(create: (context) => sl(),)],
+      providers: [ChangeNotifierProvider(create: (context) => MiniplayerProvider(),),ChangeNotifierProvider<HomeDataProvider>(create: (context) => sl()..init(),),ChangeNotifierProvider<AccountProvider>(create: (context) => sl()..init(),),ChangeNotifierProvider<SearchProvider>(create: (context) => sl()..init(),)],
       child: MaterialApp(
         title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,
@@ -35,6 +35,42 @@ class MyApp extends StatelessWidget {
         ),
         
         home: const BottomNavigationScreenConfig(),
+      ),
+    );
+  }
+}
+
+class SlashScreen extends StatefulWidget {
+  const SlashScreen({super.key});
+
+  @override
+  State<SlashScreen> createState() => _SlashScreenState();
+}
+
+class _SlashScreenState extends State<SlashScreen> {
+  @override
+  void initState() {
+    initData();
+    super.initState();
+  }
+
+  void initData()async
+  {
+    await Future.delayed(const Duration(seconds: 3),() {
+      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const BottomNavigationScreenConfig(),), (route) => false);
+    },);
+    
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(child: Image.asset("assets/logo/Animation - 1712560739640.gif",height: 150,width: 150,),)
+        ],
       ),
     );
   }

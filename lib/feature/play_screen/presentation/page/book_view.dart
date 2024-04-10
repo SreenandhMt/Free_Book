@@ -29,7 +29,6 @@ class _BookViewState extends State<BookView> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     if(document==null)
     {
       return const CupertinoActivityIndicator();
@@ -40,13 +39,11 @@ class _BookViewState extends State<BookView> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(),
           Expanded(
             child: PdfViewPinch(
             scrollDirection: Axis.vertical,
             controller: document!),
           ),
-          SizedBox(),
         ],
       ),
     );

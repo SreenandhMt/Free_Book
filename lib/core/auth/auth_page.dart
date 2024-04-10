@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -148,7 +146,6 @@ class SignInPage extends StatelessWidget {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message!),backgroundColor: Colors.red,
       
       ));
-                        log(e.message!);
                       }
                     }
                   },child: Container(height: 60,decoration: BoxDecoration(color: Colors.black26,borderRadius: BorderRadius.circular(10)),child: const Center(child: Text("Sign In"),)))

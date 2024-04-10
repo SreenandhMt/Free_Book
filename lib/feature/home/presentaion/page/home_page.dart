@@ -1,5 +1,4 @@
 
-import 'package:ebooks_free/feature/my_pdf/presentaion/page/book_create_page/create_books.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +19,7 @@ class ScreenHome extends StatefulWidget {
 class _ScreenHomeState extends State<ScreenHome> {
   @override
   void initState() {
-    context.read<HomeDataProvider>().init();
+    context.read<HomeDataProvider>().getAllData();
     super.initState();
   }
   @override
@@ -29,7 +28,6 @@ class _ScreenHomeState extends State<ScreenHome> {
     final size = MediaQuery.of(context).size;
     return Consumer<HomeDataProvider>(builder: (context,provider,_)
     {
-    if(provider.isLoding) return const Center(child: CupertinoActivityIndicator(),);
 
     if(size.width<=600)
     {

@@ -3,14 +3,17 @@ import 'dart:developer';
 import 'package:ebooks_free/core/auth/auth_gate.dart';
 import 'package:ebooks_free/core/miniplayer_config.dart';
 import 'package:ebooks_free/feature/search/presentaion/page/search_page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:miniplayer/miniplayer.dart';
 import 'package:provider/provider.dart';
 
 import 'feature/home/presentaion/page/home_page.dart';
-import 'feature/play_screen/play_part.dart';
+import 'feature/play_screen/presentation/page/play_part.dart';
 
 ValueNotifier currentScreen = ValueNotifier(0);
+ValueNotifier color = ValueNotifier(Colors.transparent);
 double currentpos=0.0;
 List<Widget> _page = [
   const ScreenHome(),
@@ -192,36 +195,48 @@ class BottomNavigationScreenConfig extends StatelessWidget {
                       ),
                     ),
                     Expanded(child: _page[currentScreen.value]),
-                    Draggable(
-                      rootOverlay: true,
-                       feedback: Container(width: 5,height: 700,color: Colors.transparent,),onDraggableCanceled: (velocity, offset) {},onDragUpdate: (details) {
-                      if(playWidgetWidth.value<=400)
+                    Consumer<MiniplayerProvider>(
+                      builder: (context, value, child) {
+                      if(value.miniPlayerIsRunning)
                       {
-                        if(details.delta.dx<0)
-                      {
-                        playWidgetWidth.value=playWidgetWidth.value+details.delta.distance;
-                      }
-                      }
-                      else if(playWidgetWidth.value<=700)
-                      {
+                        return MouseRegion(
+                      cursor: SystemMouseCursors.resizeLeftRight,
+                      child: Draggable(
                         
-                        if(details.delta.dx>0)
-                      {
-                        playWidgetWidth.value=playWidgetWidth.value-details.delta.distance;
+                        rootOverlay: true,
+                         feedback: Container(width: 5,height: 700,color: Colors.transparent,),onDraggableCanceled: (velocity, offset) {},onDragUpdate: (details) {
+                        if(playWidgetWidth.value<=400)
+                        {
+                          if(details.delta.dx<0)
+                        {
+                          playWidgetWidth.value=playWidgetWidth.value+details.delta.distance;
+                        }
+                        }
+                        else if(playWidgetWidth.value<=700)
+                        {
+                          
+                          if(details.delta.dx>0)
+                        {
+                          playWidgetWidth.value=playWidgetWidth.value-details.delta.distance;
+                        }else{
+                          playWidgetWidth.value=playWidgetWidth.value+details.delta.distance;
+                        }
+                        }
+                        else{
+                          if(details.delta.dx>0)
+                        {
+                          playWidgetWidth.value=playWidgetWidth.value-details.delta.distance;
+                        }
+                        }
+                        
+                      },
+                      child: Container(width: 10,height: 700,color: Colors.transparent,),
+                      ),
+                    );
                       }else{
-                        playWidgetWidth.value=playWidgetWidth.value+details.delta.distance;
+                        return const SizedBox(width: 4,);
                       }
-                      }
-                      else{
-                        if(details.delta.dx>0)
-                      {
-                        playWidgetWidth.value=playWidgetWidth.value-details.delta.distance;
-                      }
-                      }
-                      
-                    },
-                    child: Container(width: 10,height: 700,color: Colors.transparent,),
-                    ),
+                    },),
                     // const SizedBox(width: 4,),
                     Consumer<MiniplayerProvider>(
                     builder: (context,provider,_) {

@@ -6,16 +6,26 @@ import 'package:provider/provider.dart';
 import '../provider/search_data_provider.dart';
 import '../widget/search_book_cart.dart';
 
-class ScreenSearch extends StatelessWidget {
+class ScreenSearch extends StatefulWidget {
   const ScreenSearch({super.key});
 
   @override
+  State<ScreenSearch> createState() => _ScreenSearchState();
+}
+
+class _ScreenSearchState extends State<ScreenSearch> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<SearchProvider>().getSearchQuary("");
+  }
+  @override
   Widget build(BuildContext context) {
-    // context.read<SearchProvider>().getSearchQuary("");
+    
     // final size = MediaQuery.of(context).size;
     return Consumer<SearchProvider>(
       builder: (context,state,_) {
-        if(state.isLoding) return const SearchLoadingPage();
+        if(state.searchQuary==null) return const SearchLoadingPage();
         return Stack(
           children: [
             Container(
@@ -57,6 +67,7 @@ class ScreenSearch extends StatelessWidget {
       }
     );
   }
+  
 }
 
 class SearchLoadingPage extends StatelessWidget {

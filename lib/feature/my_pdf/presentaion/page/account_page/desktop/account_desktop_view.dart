@@ -22,9 +22,6 @@ class AccountDesktopView extends StatelessWidget {
               ),
           child: Consumer<AccountProvider>(
             builder: (context, state, _) {
-              if (state.isLoding) {
-                return const AccountPageLoading();
-              }
               return Scaffold(
                 extendBodyBehindAppBar: true,
                 backgroundColor: Colors.transparent,

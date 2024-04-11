@@ -20,12 +20,7 @@ class AccountTabletView extends StatelessWidget {
               // backgroundBlendMode: BlendMode.multiply,
               ),
           child: Consumer<AccountProvider>(
-            builder: (context, state,_) {
-              if(state.isLoding)
-              {
-                return const AccountPageLoading();
-              }
-              
+            builder: (context, state,_) {  
               return Scaffold(
                 extendBodyBehindAppBar: true,
                 backgroundColor: Colors.transparent,

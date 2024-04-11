@@ -4,15 +4,17 @@ import 'package:ebooks_free/core/module/main_module.dart';
 FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
 class SearchScreenData {
-
+  List<MainDataModule>? storeLoadedData;
   Future<List<MainDataModule>> searchData(String search)async {
     List<MainDataModule> searchQuray=[];
-    final data = await _firestore.collection("books").get().then((value) => value.docs.map((e) => MainDataModule.formJson(e.data())).toList());
+    if(storeLoadedData==null)
+    {
+      storeLoadedData = await _firestore.collection("books").get().then((value) => value.docs.map((e) => MainDataModule.formJson(e.data())).toList());
+    }
     if(search.isEmpty){
-      data.shuffle();
-      return data;
+      return storeLoadedData!;
     }else{
-      for (var row in data) {
+      for (var row in storeLoadedData!) {
       if(row.bookName!.toLowerCase().contains(search.toLowerCase())||search.toLowerCase().contains(row.bookName!.toLowerCase()))
       {
         searchQuray.add(row);

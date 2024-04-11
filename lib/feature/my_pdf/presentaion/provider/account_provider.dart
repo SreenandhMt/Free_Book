@@ -40,10 +40,6 @@ class AccountProvider extends ChangeNotifier{
     } catch (e) {
       
     }
-    if(privateBooks!=null&&privateBooks!.isEmpty)
-    {
-      privateBooks=null;
-    }
     notifyListeners();
     
     return;

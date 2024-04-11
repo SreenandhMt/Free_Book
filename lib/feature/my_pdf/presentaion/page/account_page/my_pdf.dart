@@ -8,6 +8,8 @@ import 'package:provider/provider.dart';
 import 'package:ebooks_free/core/entitles/main_entities.dart';
 import 'package:ebooks_free/feature/my_pdf/presentaion/provider/account_provider.dart';
 
+import '../../widget/loading/account_loading_screen.dart';
+
 
 class MyPdfToAudioPage extends StatefulWidget {
   const MyPdfToAudioPage({super.key});
@@ -22,7 +24,7 @@ class _MyPdfToAudioPageState extends State<MyPdfToAudioPage> {
 
   @override
   void initState() {
-    // context.read<AccountProvider>().getAllData();
+    context.read<AccountProvider>().getAllData();
     super.initState();
   }
 
@@ -31,6 +33,9 @@ class _MyPdfToAudioPageState extends State<MyPdfToAudioPage> {
     final size = MediaQuery.of(context).size;
     return Consumer<AccountProvider>(
       builder: (context, value, child) {
+        if (value.publicBooks==null) {
+          return const AccountPageLoading();
+        }
         if (size.width <= 600) {
           return const AccountMobileView();
         } else if (size.width <= 1200) {

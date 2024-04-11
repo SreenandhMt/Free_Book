@@ -18,7 +18,7 @@ class AccountCategoryForLoading extends StatelessWidget {
             ),
           ),
           LimitedBox(
-            maxHeight: (size.width / 2) * 1.2,
+            maxHeight: (size.width / 2) * 1,
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: List.generate(
@@ -60,12 +60,14 @@ class BookCartLoadingForAccountPage extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     if (size.width <= 600) {
       return Container(
+        margin: const EdgeInsets.all(4),
         width: size.width * 0.31,
         height: size.width * 0.43,
         decoration: BoxDecoration(
           color: Colors.black26,
-          borderRadius: BorderRadius.circular(5),
-        ),
+            borderRadius: BorderRadius.circular(5),
+            
+                ),
       );
     } else {
       return Container(

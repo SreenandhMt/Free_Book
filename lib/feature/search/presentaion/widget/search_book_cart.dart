@@ -26,7 +26,7 @@ class SearchPageCard extends StatelessWidget {
                         eBook: book,
                       ))),
               child: Container(
-                margin: const EdgeInsets.all(8),
+                margin: const EdgeInsets.all(3),
                 width: size.width * 0.31,
                 height: size.width * 0.43,
                 decoration: BoxDecoration(
@@ -61,7 +61,7 @@ class SearchPageCard extends StatelessWidget {
                         eBook: book,
                       ))),
               child: Container(
-                margin: const EdgeInsets.all(4),
+                margin: const EdgeInsets.all(3),
                 width: 200,
                 height: 290,
                 decoration: BoxDecoration(
@@ -103,7 +103,7 @@ class SearchPageCardLoading extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              margin: const EdgeInsets.all(8),
+              margin: const EdgeInsets.all(3),
               width: size.width * 0.31,
               height: size.width * 0.43,
               decoration: BoxDecoration(
@@ -120,7 +120,7 @@ class SearchPageCardLoading extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              margin: const EdgeInsets.all(8),
+              margin: const EdgeInsets.all(3),
               width: 200,
               height: 290,
               decoration: BoxDecoration(

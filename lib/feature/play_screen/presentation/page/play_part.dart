@@ -226,8 +226,8 @@ class _ScreenPlayPartState extends State<ScreenPlayPart>
                                 Column(
                                   children: [
                                     Container(
-                                      height: 350,
-                                      width: 290,
+                                      height: 440,
+                                      width: 300,
                                       decoration: BoxDecoration(
                                           color: Colors.black12,
                                           borderRadius: BorderRadius.circular(15),

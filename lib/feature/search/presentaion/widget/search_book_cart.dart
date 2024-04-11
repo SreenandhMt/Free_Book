@@ -46,7 +46,7 @@ class SearchPageCard extends StatelessWidget {
           GestureDetector(
             onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => ScreenPlay(eBook: book,))),
             child: Container(
-              margin: const EdgeInsets.all(8),
+              margin: const EdgeInsets.all(4),
               width: 200,
               height: 290,
               decoration: BoxDecoration(

@@ -54,7 +54,7 @@ class AccountDataSurces {
 
   Future<List<MainDataModule>> getFavoritebook(String uid)async
   {
-    return await _firebaseFirestore.collection("favorite").doc("s"/*FirebaseAuth.instance.currentUser!.uid*/).collection("books").get().then((value) => value.docs.map((e) => MainDataModule.formJson(e.data())).toList());
+    return await _firebaseFirestore.collection("favorite").doc(uid).collection("books").get().then((value) => value.docs.map((e) => MainDataModule.formJson(e.data())).toList());
   }
 
   Future<void> addFavoritebook(MainDataModule mainDataModule)async

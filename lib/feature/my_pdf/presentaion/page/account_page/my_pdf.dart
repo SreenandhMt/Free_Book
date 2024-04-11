@@ -22,7 +22,7 @@ class _MyPdfToAudioPageState extends State<MyPdfToAudioPage> {
 
   @override
   void initState() {
-    context.read<AccountProvider>().getAllData();
+    // context.read<AccountProvider>().getAllData();
     super.initState();
   }
 

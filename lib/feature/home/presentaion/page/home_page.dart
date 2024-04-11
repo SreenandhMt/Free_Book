@@ -19,7 +19,7 @@ class ScreenHome extends StatefulWidget {
 class _ScreenHomeState extends State<ScreenHome> {
   @override
   void initState() {
-    context.read<HomeDataProvider>().getAllData();
+    // context.read<HomeDataProvider>().getAllData();
     super.initState();
   }
   @override

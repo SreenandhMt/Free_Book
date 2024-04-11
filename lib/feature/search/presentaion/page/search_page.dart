@@ -11,7 +11,7 @@ class ScreenSearch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<SearchProvider>().getSearchQuary("");
+    // context.read<SearchProvider>().getSearchQuary("");
     // final size = MediaQuery.of(context).size;
     return Consumer<SearchProvider>(
       builder: (context,state,_) {

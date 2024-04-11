@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [ChangeNotifierProvider(create: (context) => MiniplayerProvider(),),ChangeNotifierProvider<HomeDataProvider>(create: (context) => sl()..init(),),ChangeNotifierProvider<AccountProvider>(create: (context) => sl()..init(),),ChangeNotifierProvider<SearchProvider>(create: (context) => sl()..init(),)],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Free Books',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           appBarTheme: const AppBarTheme(backgroundColor: Colors.black),

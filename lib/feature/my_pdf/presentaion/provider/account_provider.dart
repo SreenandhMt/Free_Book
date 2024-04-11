@@ -32,10 +32,14 @@ class AccountProvider extends ChangeNotifier{
   }
 
   Future<void>getAllData()async{
-    final uid = FirebaseAuth.instance.currentUser!.uid;
+    try {
+      final uid = FirebaseAuth.instance.currentUser!.uid;
     publicBooks = await accountUcecase.myPublicBooks(uid);
     favoriteBooks = await accountUcecase.getFavoritebook(uid);
     privateBooks = await accountUcecase.getPrivateBooks(uid);
+    } catch (e) {
+      
+    }
     if(privateBooks!=null&&privateBooks!.isEmpty)
     {
       privateBooks=null;

@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ebooks_free/core/theme.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:miniplayer/miniplayer.dart';
 import 'package:provider/provider.dart';
@@ -27,9 +29,7 @@ class _ScreenPlayState extends State<ScreenPlay> {
     final size = MediaQuery.of(context).size;
     if (size.width <= 600) {
       return Container(
-        decoration: BoxDecoration(
-          gradient: theme
-        ),
+        decoration: BoxDecoration(gradient: theme),
         child: Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
@@ -49,11 +49,22 @@ class _ScreenPlayState extends State<ScreenPlay> {
                         width: size.width * 1.2,
                         height: size.width * 1.4,
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            image: DecorationImage(
-                                image: NetworkImage(
-                                    widget.eBook.bookImageUrl ?? ""),
-                                fit: BoxFit.fill)),
+                          borderRadius: BorderRadius.circular(10),
+                          // image: DecorationImage(
+                          //     image: NetworkImage(
+                          //         widget.eBook.bookImageUrl ?? ""),
+                          //     fit: BoxFit.fill)
+                        ),
+                        child: CachedNetworkImage(
+                          fit: BoxFit.cover,
+                          imageUrl: widget.eBook.bookImageUrl ?? "",
+                          placeholder: (context, url) => const Center(
+                              child: CupertinoActivityIndicator(
+                            radius: 10,
+                          )),
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
+                        ),
                       ),
                     ),
                     const SizedBox(
@@ -250,12 +261,23 @@ class _DesktopPartPageState extends State<DesktopPartPage> {
                     width: 300,
                     height: 440,
                     decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(10),
-                        image: DecorationImage(
-                            image:
-                                NetworkImage(widget.eBook.bookImageUrl ?? ""),
-                            fit: BoxFit.fill)),
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(10),
+                      // image: DecorationImage(
+                      //     image:
+                      //         NetworkImage(widget.eBook.bookImageUrl ?? ""),
+                      //     fit: BoxFit.fill)
+                    ),
+                    child: CachedNetworkImage(
+                      fit: BoxFit.cover,
+                      imageUrl: widget.eBook.bookImageUrl ?? "",
+                      placeholder: (context, url) => const Center(
+                          child: CupertinoActivityIndicator(
+                        radius: 10,
+                      )),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                    ),
                   ),
                 ),
                 Expanded(
@@ -266,7 +288,7 @@ class _DesktopPartPageState extends State<DesktopPartPage> {
                         const SizedBox(
                           height: 10,
                         ),
-                         Text(
+                        Text(
                           widget.eBook.bookName!,
                           style: const TextStyle(
                               fontSize: 17, fontWeight: FontWeight.w700),
@@ -285,8 +307,7 @@ class _DesktopPartPageState extends State<DesktopPartPage> {
                               const Text(
                                 "About",
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20),
+                                    fontWeight: FontWeight.bold, fontSize: 20),
                               ),
                               Column(
                                 children: [
@@ -331,9 +352,9 @@ class _DesktopPartPageState extends State<DesktopPartPage> {
                                         context
                                             .read<MiniplayerProvider>()
                                             .addMiniPlayer(
-                                                bookUrl: widget
-                                                        .eBook.bookImageUrl ??
-                                                    "",
+                                                bookUrl:
+                                                    widget.eBook.bookImageUrl ??
+                                                        "",
                                                 bookname:
                                                     widget.eBook.bookName!,
                                                 partName: widget.eBook
@@ -341,18 +362,18 @@ class _DesktopPartPageState extends State<DesktopPartPage> {
                                                     "",
                                                 pdfUrl:
                                                     widget.eBook.pdfUrl ?? "",
-                                                text: widget
-                                                        .eBook.text![index] ??
-                                                    "",
+                                                text:
+                                                    widget.eBook.text![index] ??
+                                                        "",
                                                 audioUrl: null,
                                                 isPlayingL: true);
                                       } else {
                                         context
                                             .read<MiniplayerProvider>()
                                             .addMiniPlayer(
-                                                bookUrl: widget
-                                                        .eBook.bookImageUrl ??
-                                                    "",
+                                                bookUrl:
+                                                    widget.eBook.bookImageUrl ??
+                                                        "",
                                                 bookname:
                                                     widget.eBook.bookName!,
                                                 partName: widget.eBook
@@ -360,9 +381,9 @@ class _DesktopPartPageState extends State<DesktopPartPage> {
                                                     "",
                                                 pdfUrl:
                                                     widget.eBook.pdfUrl ?? "",
-                                                text: widget
-                                                        .eBook.text![index] ??
-                                                    "",
+                                                text:
+                                                    widget.eBook.text![index] ??
+                                                        "",
                                                 audioUrl: widget
                                                     .eBook.audioUrl![index],
                                                 isPlayingL: true);
@@ -372,7 +393,8 @@ class _DesktopPartPageState extends State<DesktopPartPage> {
                                           .pop(); //push(MaterialPageRoute(builder: (context)=>const ScreenPlayPart()));
                                     },
                                     child: MouseRegion(
-                                      cursor: MaterialStateMouseCursor.clickable,
+                                      cursor:
+                                          MaterialStateMouseCursor.clickable,
                                       child: Container(
                                         margin: const EdgeInsets.all(3.0),
                                         padding: const EdgeInsets.all(10),
@@ -389,14 +411,15 @@ class _DesktopPartPageState extends State<DesktopPartPage> {
                                                             Colors.black38,
                                                         child: Center(
                                                           child: Text(
-                                                              "${index+1}"),
+                                                              "${index + 1}"),
                                                         ))),
                                                 Align(
                                                     alignment:
                                                         Alignment.centerLeft,
                                                     child: Padding(
-                                                      padding: const EdgeInsets.only(
-                                                          left: 70, top: 1),
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 70, top: 1),
                                                       child: Column(
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
@@ -406,7 +429,9 @@ class _DesktopPartPageState extends State<DesktopPartPage> {
                                                                 .start,
                                                         children: [
                                                           Text(
-                                                            widget.eBook.partName![index],
+                                                            widget.eBook
+                                                                    .partName![
+                                                                index],
                                                             softWrap: true,
                                                             style: const TextStyle(
                                                                 fontWeight:
@@ -414,7 +439,8 @@ class _DesktopPartPageState extends State<DesktopPartPage> {
                                                                         .bold),
                                                           ),
                                                           Text(
-                                                            widget.eBook.bookName!,
+                                                            widget.eBook
+                                                                .bookName!,
                                                             softWrap: true,
                                                             style: const TextStyle(
                                                                 fontWeight:

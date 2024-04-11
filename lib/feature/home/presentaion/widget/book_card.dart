@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../core/entitles/main_entities.dart';
 import '../../../play_screen/presentation/page/play_page.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class BookCart extends StatelessWidget {
   const BookCart({
@@ -26,10 +28,19 @@ class BookCart extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.black26,
                 borderRadius: BorderRadius.circular(5),
-                image:DecorationImage(
-                    image: NetworkImage(book.bookImageUrl??""),
-                    fit: BoxFit.cover)
+                // image:DecorationImage(
+                //     image: NetworkImage(book.bookImageUrl??""),
+                //     fit: BoxFit.cover)
                     ),
+                    child: CachedNetworkImage(
+              fit: BoxFit.cover,
+              imageUrl: book.bookImageUrl ?? "",
+              placeholder: (context, url) => const Center(
+                  child: CupertinoActivityIndicator(
+                radius: 10,
+              )),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+            ),
           ),
         ),
       );
@@ -43,11 +54,20 @@ class BookCart extends StatelessWidget {
             height: 290,
             decoration: BoxDecoration(
               color: Colors.black26,
-                borderRadius: BorderRadius.circular(5),
-                image: DecorationImage(
-                    image: NetworkImage(book.bookImageUrl??""),
-                    fit: BoxFit.cover)
-                    ),
+              borderRadius: BorderRadius.circular(5),
+              // image: DecorationImage(
+              //     image: NetworkImage(book.bookImageUrl??""),
+              //     fit: BoxFit.cover)
+            ),
+            child: CachedNetworkImage(
+              fit: BoxFit.cover,
+              imageUrl: book.bookImageUrl ?? "",
+              placeholder: (context, url) => const Center(
+                  child: CupertinoActivityIndicator(
+                radius: 10,
+              )),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+            ),
           ),
         ),
       );

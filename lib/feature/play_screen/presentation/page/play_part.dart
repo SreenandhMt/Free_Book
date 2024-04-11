@@ -1,7 +1,9 @@
 
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ebooks_free/core/theme.dart';
 import 'package:ebooks_free/feature/play_screen/presentation/page/book_view.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:just_audio/just_audio.dart';
@@ -98,17 +100,28 @@ class _ScreenPlayPartState extends State<ScreenPlayPart>
                               decoration: BoxDecoration(
                                   color: Colors.black12,
                                   borderRadius: BorderRadius.circular(15),
-                                  image: DecorationImage(
-                                      image: NetworkImage(state.bookUrl),
-                                      fit: BoxFit.fill)),
-                            ),
-                            SizedBox(
-                              height: size.width * 0.07,
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  // image: DecorationImage(
+                                  //     image: NetworkImage(state.bookUrl),
+                                  //     fit: BoxFit.fill)
+                                ),
+                                child: CachedNetworkImage(
+                                  fit: BoxFit.cover,
+                                  imageUrl: state.bookUrl,
+                                  placeholder: (context, url) => const Center(
+                                      child: CupertinoActivityIndicator(
+                                    radius: 10,
+                                  )),
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
+                                ),
+                              ),
+                              SizedBox(
+                                height: size.width * 0.07,
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Column(
                               children: [
@@ -231,12 +244,26 @@ class _ScreenPlayPartState extends State<ScreenPlayPart>
                                       decoration: BoxDecoration(
                                           color: Colors.black12,
                                           borderRadius: BorderRadius.circular(15),
-                                          image: DecorationImage(
-                                              image: NetworkImage(state.bookUrl),
-                                              fit: BoxFit.fill)),
-                                    ),
-                                    SizedBox(
-                                      height: size.width * 0.07,
+                                          // image: DecorationImage(
+                                          //     image: NetworkImage(state.bookUrl),
+                                          //     fit: BoxFit.fill)
+                                          ),
+                                          child: CachedNetworkImage(
+                                            fit: BoxFit.cover,
+                                            imageUrl: state.bookUrl,
+                                            placeholder: (context, url) =>
+                                                const Center(
+                                                    child:
+                                                        CupertinoActivityIndicator(
+                                              radius: 10,
+                                            )),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    const Icon(Icons.error),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: size.width * 0.07,
                                     ),
                                   ],
                                 ),

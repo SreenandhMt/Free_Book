@@ -1,7 +1,10 @@
-## ebooks_free
+## Free Book
 
 This app is an ebook platform that allows users to create their own books, whether privately or publicly. You can create copyrighted books privately and access all the features, including the AI reader, audiobook, and PDF runner, for free.
 
+## Screen Record
+
+[Watch the video](https://youtu.be/mtGap8hVqHY)
 
 ## web
 

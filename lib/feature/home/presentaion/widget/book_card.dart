@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../../../core/entitles/main_entities.dart';
 import '../../../play_screen/presentation/page/play_page.dart';
@@ -15,24 +16,25 @@ class BookCart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    if(size.width<=600)
-    {
+    if (size.width <= 600) {
       return MouseRegion(
         cursor: MaterialStateMouseCursor.clickable,
         child: GestureDetector(
           onTap: () => Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => ScreenPlay(eBook: book,))),
+              builder: (context) => ScreenPlay(
+                    eBook: book,
+                  ))),
           child: Container(
             width: size.width * 0.31,
             height: size.width * 0.43,
             decoration: BoxDecoration(
               color: Colors.black26,
-                borderRadius: BorderRadius.circular(5),
-                // image:DecorationImage(
-                //     image: NetworkImage(book.bookImageUrl??""),
-                //     fit: BoxFit.cover)
-                    ),
-                    child: CachedNetworkImage(
+              borderRadius: BorderRadius.circular(5),
+              // image:DecorationImage(
+              //     image: NetworkImage(book.bookImageUrl??""),
+              //     fit: BoxFit.cover)
+            ),
+            child: CachedNetworkImage(
               fit: BoxFit.cover,
               imageUrl: book.bookImageUrl ?? "",
               placeholder: (context, url) => const Center(
@@ -44,11 +46,14 @@ class BookCart extends StatelessWidget {
           ),
         ),
       );
-    }else{
+    } else {
       return MouseRegion(
         cursor: MaterialStateMouseCursor.clickable,
         child: GestureDetector(
-          onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => ScreenPlay(eBook: book,))),
+          onTap: () => Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => ScreenPlay(
+                    eBook: book,
+                  ))),
           child: Container(
             width: 200,
             height: 290,
@@ -83,26 +88,37 @@ class BookCartForLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    if(size.width<=600)
-    {
-      return Container(
-        width: size.width * 0.31,
-        height: size.width * 0.43,
-        decoration: BoxDecoration(
-          color: Colors.black26,
-            borderRadius: BorderRadius.circular(5),
-            
-                ),
+    if (size.width <= 600) {
+      return Shimmer.fromColors(
+          baseColor: Colors.black54,
+          highlightColor: Colors.black38,
+          direction: ShimmerDirection.ltr,
+          period: const Duration(seconds: 2),
+        child: Container(
+            width: size.width * 0.31,
+            height: size.width * 0.43,
+            decoration: BoxDecoration(
+              color: Colors.black26,
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+            )),
       );
-    }else{
-      return Container(
-        width: 200,
-        height: 290,
-        decoration: BoxDecoration(
-          color: Colors.black26,
+    } else {
+      return Shimmer.fromColors(
+          baseColor: Colors.black54,
+          highlightColor: Colors.black38,
+          direction: ShimmerDirection.ltr,
+          period: const Duration(seconds: 2),
+        child: Container(
+          width: 200,
+          height: 290,
+          decoration: BoxDecoration(
+            color: Colors.black26,
             borderRadius: BorderRadius.circular(5),
-            
-                ),
+          ),
+        ),
       );
     }
   }

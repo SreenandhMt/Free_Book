@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 
 class AccountCategoryForLoading extends StatelessWidget {
   const AccountCategoryForLoading({super.key, required this.title});
@@ -17,12 +18,18 @@ class AccountCategoryForLoading extends StatelessWidget {
               style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
             ),
           ),
-          LimitedBox(
-            maxHeight: (size.width / 2) * 1,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: List.generate(
-                  5, (index) => const BookCartLoadingForAccountPage()),
+          Shimmer.fromColors(
+            baseColor: Colors.black54,
+            highlightColor: Colors.black38,
+            direction: ShimmerDirection.ltr,
+            period: const Duration(seconds: 2),
+            child: LimitedBox(
+              maxHeight: (size.width / 2) * 1,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: List.generate(
+                    5, (index) => const BookCartLoadingForAccountPage()),
+              ),
             ),
           )
         ],
@@ -39,7 +46,7 @@ class AccountCategoryForLoading extends StatelessWidget {
         ),
         Wrap(
           children: List.generate(
-              5,
+              12,
               (index) => const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: BookCartLoadingForAccountPage(),
@@ -59,23 +66,34 @@ class BookCartLoadingForAccountPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     if (size.width <= 600) {
-      return Container(
-        margin: const EdgeInsets.all(4),
-        width: size.width * 0.31,
-        height: size.width * 0.43,
-        decoration: BoxDecoration(
-          color: Colors.black26,
+      return Shimmer.fromColors(
+        baseColor: Colors.black54,
+        highlightColor: Colors.black38,
+        direction: ShimmerDirection.ltr,
+        period: const Duration(seconds: 2),
+        child: Container(
+          margin: const EdgeInsets.all(4),
+          width: size.width * 0.31,
+          height: size.width * 0.43,
+          decoration: BoxDecoration(
+            color: Colors.black26,
             borderRadius: BorderRadius.circular(5),
-            
-                ),
+          ),
+        ),
       );
     } else {
-      return Container(
-        width: 200,
-        height: 290,
-        decoration: BoxDecoration(
-          color: Colors.black26,
-          borderRadius: BorderRadius.circular(5),
+      return Shimmer.fromColors(
+        baseColor: Colors.black54,
+        highlightColor: Colors.black38,
+        direction: ShimmerDirection.ltr,
+        period: const Duration(seconds: 2),
+        child: Container(
+          width: 200,
+          height: 290,
+          decoration: BoxDecoration(
+            color: Colors.black26,
+            borderRadius: BorderRadius.circular(5),
+          ),
         ),
       );
     }

@@ -35,7 +35,7 @@ class AccountDesktopView extends StatelessWidget {
                     if(state.publicBooks != null)
                       AccountCategory(
                           content: state.publicBooks!, title: "Public"),
-                    if(state.privateBooks != null)
+                    if(state.privateBooks != null&&state.privateBooks!.isNotEmpty)
                     AccountCategory(
                           content: state.privateBooks!, title: "Private"),
                   ],

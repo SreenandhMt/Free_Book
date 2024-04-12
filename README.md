@@ -1,6 +1,11 @@
-# ebooks_free
+## ebooks_free
 
-A new Flutter project.
+This app is an ebook platform that allows users to create their own books, whether privately or publicly. You can create copyrighted books privately and access all the features, including the AI reader, audiobook, and PDF runner, for free.
+
+
+## web
+
+-[Open Website](https://ebook-e2135.firebaseapp.com/)
 
 ## Getting Started
 

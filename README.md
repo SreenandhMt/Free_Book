@@ -4,7 +4,7 @@ This app is an ebook platform that allows users to create their own books, wheth
 
 ## Screen Record
 
-[Watch the video](https://youtu.be/mtGap8hVqHY)
+[Watch the video](https://youtu.be/AmF8aM1AKnk)
 
 ## web
 
